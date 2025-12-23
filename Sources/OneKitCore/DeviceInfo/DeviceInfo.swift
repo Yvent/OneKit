@@ -113,14 +113,40 @@ public enum DeviceInfo {
         case "iPhone15,5": return "iPhone 15 Plus"
         case "iPhone16,1": return "iPhone 15 Pro"
         case "iPhone16,2": return "iPhone 15 Pro Max"
+        case "iPhone17,1": return "iPhone 16 Pro"
+        case "iPhone17,2": return "iPhone 16 Pro Max"
+        case "iPhone17,3": return "iPhone 16"
+        case "iPhone17,4": return "iPhone 16 Plus"
+
+        // iPad Pro
+        case "iPad8,1", "iPad8,2", "iPad8,3", "iPad8,4": return "iPad Pro 11 (1st Gen)"
+        case "iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8": return "iPad Pro 12.9 (3rd Gen)"
+        case "iPad8,9", "iPad8,10": return "iPad Pro 11 (2nd Gen)"
+        case "iPad8,11", "iPad8,12": return "iPad Pro 12.9 (4th Gen)"
+        case "iPad13,4", "iPad13,5", "iPad13,6", "iPad13,7": return "iPad Pro 11 (3rd Gen)"
+        case "iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11": return "iPad Pro 12.9 (5th Gen)"
+        case "iPad14,3", "iPad14,4": return "iPad Pro 11 (4th Gen)"
+        case "iPad14,5", "iPad14,6": return "iPad Pro 12.9 (6th Gen)"
+        case "iPad16,3", "iPad16,4": return "iPad Pro 11 (5th Gen)"
+        case "iPad16,5", "iPad16,6": return "iPad Pro 12.9 (7th Gen)"
+
+        // iPad Air
+        case "iPad11,3", "iPad11,4": return "iPad Air (4th Gen)"
+        case "iPad13,1", "iPad13,2": return "iPad Air (5th Gen)"
+        case "iPad13,16", "iPad13,17": return "iPad Air (6th Gen)"
+        case "iPad14,8", "iPad14,9": return "iPad Air (7th Gen)"
+        case "iPad14,10", "iPad14,11": return "iPad Air (7th Gen)"
 
         // iPad
-        case "iPad13,16", "iPad13,17": return "iPad Pro 12.9 (6th Gen)"
-        case "iPad13,18", "iPad13,19": return "iPad Pro 12.9 (6th Gen)"
-        case "iPad13,10", "iPad13,11": return "iPad Pro 11 (4th Gen)"
-        case "iPad13,1", "iPad13,2": return "iPad Air (5th Gen)"
+        case "iPad11,6", "iPad11,7": return "iPad (8th Gen)"
         case "iPad12,1", "iPad12,2": return "iPad (9th Gen)"
+        case "iPad13,18", "iPad13,19": return "iPad (10th Gen)"
+        case "iPad13,20", "iPad13,21", "iPad13,22": return "iPad (10th Gen)"
+
+        // iPad mini
+        case "iPad11,1", "iPad11,2": return "iPad mini (5th Gen)"
         case "iPad14,1", "iPad14,2": return "iPad mini (6th Gen)"
+        case "iPad16,1", "iPad16,2": return "iPad mini (7th Gen)"
 
         // iPod
         case "iPod9,1": return "iPod touch (7th Gen)"
