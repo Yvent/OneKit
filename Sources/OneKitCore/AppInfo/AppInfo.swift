@@ -55,20 +55,6 @@ public enum AppInfo {
         infoDictionary?["CFBundleVersion"] as? String ?? ""
     }
 
-    // MARK: - System Info
-
-    /// System version string
-    ///
-    /// 系统版本信息（如 iOS 17.2）
-    @MainActor
-    public static var systemVersion: String {
-        #if canImport(UIKit)
-        return "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
-        #else
-        return "Unknown"
-        #endif
-    }
-
     // MARK: - Configurable Values
 
     /// Support email address
