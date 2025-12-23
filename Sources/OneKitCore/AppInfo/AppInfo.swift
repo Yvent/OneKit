@@ -60,6 +60,7 @@ public enum AppInfo {
     /// System version string
     ///
     /// 系统版本信息（如 iOS 17.2）
+    @MainActor
     public static var systemVersion: String {
         #if canImport(UIKit)
         return "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
