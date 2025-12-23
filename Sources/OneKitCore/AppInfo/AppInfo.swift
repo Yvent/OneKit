@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// AppInfo
 ///
@@ -23,12 +25,12 @@ public enum AppInfo {
     /// Main bundle info dictionary
     ///
     /// 主 Bundle 的 infoDictionary
-    private static let infoDictionary = Bundle.main.infoDictionary
+    private nonisolated(unsafe) static let infoDictionary = Bundle.main.infoDictionary
 
     /// Localized info dictionary
     ///
     /// 本地化后的 infoDictionary（优先用于展示）
-    private static let localizedInfoDictionary = Bundle.main.localizedInfoDictionary
+    private nonisolated(unsafe) static let localizedInfoDictionary = Bundle.main.localizedInfoDictionary
 
     /// Application display name
     ///
@@ -59,7 +61,11 @@ public enum AppInfo {
     ///
     /// 系统版本信息（如 iOS 17.2）
     public static var systemVersion: String {
-        "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
+        #if canImport(UIKit)
+        return "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
+        #else
+        return "Unknown"
+        #endif
     }
 
     // MARK: - Configurable Values
@@ -67,22 +73,22 @@ public enum AppInfo {
     /// Support email address
     ///
     /// 客服支持邮箱（可选）
-    public private(set) static var supportEmail: String?
+    public nonisolated(unsafe) private(set) static var supportEmail: String?
 
     /// App Store ID
     ///
     /// App Store 应用 ID（可选，TestFlight / 企业包可不配置）
-    public private(set) static var appStoreID: String?
+    public nonisolated(unsafe) private(set) static var appStoreID: String?
 
     /// Privacy policy URL
     ///
     /// 隐私协议链接（可选）
-    public private(set) static var privacyPolicyURL: URL?
+    public nonisolated(unsafe) private(set) static var privacyPolicyURL: URL?
 
     /// Terms of service URL
     ///
     /// 使用条款链接（可选）
-    public private(set) static var termsOfServiceURL: URL?
+    public nonisolated(unsafe) private(set) static var termsOfServiceURL: URL?
 
     // MARK: - App Store URLs
 
