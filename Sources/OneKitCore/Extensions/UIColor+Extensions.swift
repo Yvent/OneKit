@@ -197,6 +197,27 @@ extension UIColor {
         getRed(nil, green: nil, blue: nil, alpha: &a)
         return a
     }
+
+    // MARK: - Random Color
+
+    /// Generate a random color
+    /// 生成随机颜色
+    ///
+    /// Example:
+    /// ```swift
+    /// let color = UIColor.random()           // Opaque random color
+    /// let color = UIColor.random(randomOpacity: true)  // Random with transparency
+    /// ```
+    /// - Parameter randomOpacity: Whether to randomize opacity (default: false)
+    /// - Returns: A random UIColor instance
+    public static func random(randomOpacity: Bool = false) -> UIColor {
+        return UIColor(
+            red: .random(in: 0...1),
+            green: .random(in: 0...1),
+            blue: .random(in: 0...1),
+            alpha: randomOpacity ? .random(in: 0...1) : 1.0
+        )
+    }
 }
 
 #endif

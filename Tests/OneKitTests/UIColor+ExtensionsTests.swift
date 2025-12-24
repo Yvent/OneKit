@@ -236,6 +236,56 @@ struct UIColorExtensionsTests {
         #expect(color.greenComponent == 234.0 / 255.0)
         #expect(color.blueComponent == 56.0 / 255.0)
     }
+
+    // MARK: - Random Color Tests
+
+    /// Test random opaque color generation
+    /// 测试随机不透明颜色生成
+    @Test("Random color should be opaque by default")
+    func randomColorOpaqueTest() async throws {
+        let color = UIColor.random()
+
+        // Alpha should be 1.0 (opaque) / 透明度应该是 1.0（不透明）
+        #expect(color.alphaComponent == 1.0)
+
+        // Components should be in valid range / 分量应该在有效范围内
+        #expect(color.redComponent >= 0 && color.redComponent <= 1.0)
+        #expect(color.greenComponent >= 0 && color.greenComponent <= 1.0)
+        #expect(color.blueComponent >= 0 && color.blueComponent <= 1.0)
+    }
+
+    /// Test random color with random opacity
+    /// 测试带随机透明度的随机颜色
+    @Test("Random color with random opacity should have varying alpha")
+    func randomColorWithOpacityTest() async throws {
+        let color = UIColor.random(randomOpacity: true)
+
+        // Alpha should be in valid range / 透明度应该在有效范围内
+        #expect(color.alphaComponent >= 0 && color.alphaComponent <= 1.0)
+
+        // Components should be in valid range / 分量应该在有效范围内
+        #expect(color.redComponent >= 0 && color.redComponent <= 1.0)
+        #expect(color.greenComponent >= 0 && color.greenComponent <= 1.0)
+        #expect(color.blueComponent >= 0 && color.blueComponent <= 1.0)
+    }
+
+    /// Test multiple random colors are different
+    /// 测试多个随机颜色是不同的
+    @Test("Multiple random colors should be different")
+    func multipleRandomColorsTest() async throws {
+        let color1 = UIColor.random()
+        let color2 = UIColor.random()
+        let color3 = UIColor.random()
+
+        // Very unlikely to get the same color twice / 极不太可能两次得到相同的颜色
+        let red1 = color1.redComponent
+        let red2 = color2.redComponent
+        let red3 = color3.redComponent
+
+        // At least one should be different / 至少有一个应该是不同的
+        let allSame = (red1 == red2) && (red2 == red3)
+        #expect(!allSame, "Random colors should vary")
+    }
 }
 
 #endif
