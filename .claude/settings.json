@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(swift build:*)",
+      "Bash(swift test:*)"
+    ]
+  },
+  "hooks": {
+    "beforeCommit": [
+      "echo \"[OneKit Rule] Commit messages must be written in English.\""
+    ]
+  },
+  "diffStrategy": "minimal"
+}
