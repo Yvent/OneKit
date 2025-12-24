@@ -32,6 +32,12 @@ OneKit is a comprehensive Swift utility library designed to streamline iOS and m
 - **Date Extensions**: Date formatting and calculation utilities
 - **UIColor Extensions**: Enhanced color manipulation with random generation
 
+### 🔐 Permission Management
+- **PermissionManager**: Type-safe permission handling for Camera, Microphone, Photo Library, and Location
+- **Status Query**: Check permission status with async/await
+- **Request Permissions**: Batch permission requests with comprehensive results
+- **Open Settings**: Convenient method to jump to system settings
+
 ### 📦 UI Components
 - **ActivityView**: Native share sheet wrapper
 - **MailView**: In-app email composer
@@ -184,6 +190,39 @@ let birthday = Date(timeIntervalSince1970: 1234567890)
 let age = birthday.age
 ```
 
+### Permission Manager
+
+```swift
+import OneKitCore
+
+// Check permission status
+let status = await PermissionManager.camera.status
+if status == .authorized {
+    print("Camera access granted")
+}
+
+// Request single permission
+let result = await PermissionManager.camera.request()
+if result == .granted {
+    print("Permission granted")
+}
+
+// Batch request multiple permissions
+let results = await PermissionManager.request([
+    .camera, .microphone, .photoLibrary
+])
+if results.allGranted {
+    print("All permissions granted!")
+} else {
+    for (type, result) in results.results {
+        print("\(type): \(result)")
+    }
+}
+
+// Open app settings
+try? await PermissionManager.camera.openSettings()
+```
+
 ## Modules
 
 OneKit is organized into three main modules:
@@ -250,6 +289,12 @@ OneKit 是一个全面的 Swift 工具库，旨在简化 iOS 和 macOS 开发。
 - **字符串扩展**: 丰富的字符串操作工具
 - **日期扩展**: 日期格式化和计算工具
 - **UIColor 扩展**: 增强的颜色操作和随机生成
+
+### 🔐 权限管理
+- **PermissionManager**: 类型安全的权限处理（相机、麦克风、相册、位置）
+- **状态查询**: 使用 async/await 检查权限状态
+- **请求权限**: 批量权限请求及完整结果
+- **打开设置**: 快速跳转到系统设置页面
 
 ### 📦 UI 组件
 - **ActivityView**: 原生分享视图封装
@@ -401,6 +446,39 @@ let isToday = date.isToday
 // 计算年龄
 let birthday = Date(timeIntervalSince1970: 1234567890)
 let age = birthday.age
+```
+
+### 权限管理
+
+```swift
+import OneKitCore
+
+// 检查权限状态
+let status = await PermissionManager.camera.status
+if status == .authorized {
+    print("相机访问已授权")
+}
+
+// 请求单个权限
+let result = await PermissionManager.camera.request()
+if result == .granted {
+    print("权限已授予")
+}
+
+// 批量请求多个权限
+let results = await PermissionManager.request([
+    .camera, .microphone, .photoLibrary
+])
+if results.allGranted {
+    print("所有权限已授予！")
+} else {
+    for (type, result) in results.results {
+        print("\(type): \(result)")
+    }
+}
+
+// 打开应用设置
+try? await PermissionManager.camera.openSettings()
 ```
 
 ## 模块说明
