@@ -5,9 +5,10 @@
 //  Created by zyw on 2025/12/23.
 //
 
+#if canImport(UIKit)
+import MessageUI
 import SwiftUI
 import UIKit
-import MessageUI
 
 struct MailView: UIViewControllerRepresentable {
 
@@ -67,3 +68,6 @@ struct MailView: UIViewControllerRepresentable {
 
     }
 }
+
+#endif
+

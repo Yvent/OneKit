@@ -1,12 +1,13 @@
 //
 //  ActivityView.swift
-//  OneKit
+//  OneKitUI
 //
 //  Created by zyw on 2025/12/23.
 //
 
-import UIKit
+#if canImport(UIKit)
 import SwiftUI
+import UIKit
 
 struct ActivityView: UIViewControllerRepresentable {
 
@@ -22,3 +23,5 @@ struct ActivityView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {}
 
 }
+
+#endif

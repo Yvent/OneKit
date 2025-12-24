@@ -19,6 +19,10 @@ let package = Package(
             name: "OneKitCore",
             targets: ["OneKitCore"]
         ),
+        .library(
+            name: "OneKitUI",
+            targets: ["OneKitUI"]
+        ),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -33,9 +37,13 @@ let package = Package(
                 .enableExperimentalFeature("StrictConcurrency=minimum")
             ]
         ),
+        .target(
+            name: "OneKitUI",
+            dependencies: ["OneKitCore"]
+        ),
         .testTarget(
             name: "OneKitTests",
-            dependencies: ["OneKit"]
+            dependencies: ["OneKit", "OneKitUI"]
         ),
     ]
 )
