@@ -49,7 +49,7 @@ OneKit is a comprehensive Swift utility library designed to streamline iOS and m
 Add OneKit to your project via Swift Package Manager:
 
 1. In Xcode, go to **File → Add Package Dependencies...**
-2. Enter the repository URL: `https://github.com/yourusername/OneKit.git`
+2. Enter the repository URL: `https://github.com/Yvent/OneKit.git`
 3. Choose the version rule (e.g., "Up to Next Major Version")
 4. Click "Add Package"
 
@@ -60,7 +60,7 @@ You can also add OneKit directly to your project:
 ```swift
 // In Package.swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/OneKit.git", from: "1.0.0")
+    .package(url: "https://github.com/Yvent/OneKit.git", from: "1.0.0")
 ]
 ```
 
@@ -268,7 +268,7 @@ OneKit 是一个全面的 Swift 工具库，旨在简化 iOS 和 macOS 开发。
 通过 Swift Package Manager 添加 OneKit 到您的项目：
 
 1. 在 Xcode 中，前往 **File → Add Package Dependencies...**
-2. 输入仓库 URL: `https://github.com/yourusername/OneKit.git`
+2. 输入仓库 URL: `https://github.com/Yvent/OneKit.git`
 3. 选择版本规则（例如："Up to Next Major Version"）
 4. 点击"Add Package"
 
@@ -279,7 +279,7 @@ OneKit 是一个全面的 Swift 工具库，旨在简化 iOS 和 macOS 开发。
 ```swift
 // 在 Package.swift 中
 dependencies: [
-    .package(url: "https://github.com/yourusername/OneKit.git", from: "1.0.0")
+    .package(url: "https://github.com/Yvent/OneKit.git", from: "1.0.0")
 ]
 ```
 
