@@ -9,13 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                Section("Core Features") {
+                    NavigationLink("Device Info", destination: DeviceInfoView())
+                    NavigationLink("Permission Manager", destination: PermissionDemoView())
+                    NavigationLink("App Info", destination: AppInfoView())
+                }
+
+                Section("UI Components") {
+                    NavigationLink("Gradient Playground", destination: GradientPlaygroundView())
+                }
+
+                Section("Utilities") {
+                    NavigationLink("String Extensions", destination: StringExtensionsView())
+                    NavigationLink("Date Extensions", destination: DateExtensionsView())
+                }
+            }
+            .navigationTitle("OneKit Demo")
         }
-        .padding()
     }
 }
 
