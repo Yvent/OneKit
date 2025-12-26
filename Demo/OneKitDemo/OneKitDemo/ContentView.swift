@@ -19,6 +19,7 @@ struct ContentView: View {
 
                 Section("UI Components") {
                     NavigationLink("Gradient Playground", destination: GradientPlaygroundView())
+                    NavigationLink("Haptic Feedback", destination: HapticDemoView())
                 }
 
                 Section("Utilities") {
