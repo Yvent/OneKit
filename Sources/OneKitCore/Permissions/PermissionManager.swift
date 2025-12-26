@@ -32,6 +32,75 @@ import Foundation
 /// ```
 public enum PermissionManager {
 
+    // MARK: - Configuration
+
+    /// Automatically show settings alert when permission is denied
+    ///
+    /// 当权限被拒绝时自动显示设置引导弹窗
+    ///
+    /// When enabled, if a user denies a permission and requests it again,
+    /// an alert will be shown prompting them to go to Settings.
+    ///
+    /// 启用后，如果用户拒绝权限后再次请求，会显示弹窗引导用户前往设置。
+    ///
+    /// Default: true
+    ///
+    /// To disable and handle denied permissions manually:
+    /// ```swift
+    /// PermissionManager.autoShowSettingsAlert = false
+    /// ```
+    public nonisolated(unsafe) static var autoShowSettingsAlert: Bool = true
+
+    /// Custom permission denied handler
+    ///
+    /// 自定义权限拒绝处理器
+    ///
+    /// If provided, this handler will be called when a permission is denied.
+    /// Return true to indicate you've handled the alert yourself,
+    /// or false to use the default OneKit alert.
+    ///
+    /// 如果提供了这个处理器，当权限被拒绝时会被调用。
+    /// 返回 true 表示你已经自己处理了弹窗，
+    /// 返回 false 则使用 OneKit 的默认弹窗。
+    ///
+    /// Example:
+    /// ```swift
+    /// PermissionManager.permissionDeniedHandler = { type in
+    ///     // Show custom alert
+    ///     myCustomAlert(for: type)
+    ///     return true  // Handled, don't show default alert
+    /// }
+    /// ```
+    public nonisolated(unsafe) static var permissionDeniedHandler: ((PermissionType) -> Bool)?
+
+    /// Custom alert configuration
+    ///
+    /// 自定义权限弹窗配置
+    ///
+    /// Configure all aspects of permission alerts for specific permission types.
+    /// This includes title, message, and button titles.
+    ///
+    /// 为特定权限配置弹窗的所有文案，包括标题、消息和按钮。
+    ///
+    /// Example:
+    /// ```swift
+    /// PermissionManager.customAlertConfiguration = [
+    ///     .camera: (
+    ///         title: "需要相机权限",
+    ///         message: "请在设置中开启相机访问权限",
+    ///         cancelButton: "取消",
+    ///         openSettingsButton: "去设置"
+    ///     ),
+    ///     .microphone: (
+    ///         title: "需要麦克风权限",
+    ///         message: "请在设置中开启麦克风访问权限",
+    ///         cancelButton: "取消",
+    ///         openSettingsButton: "去设置"
+    ///     )
+    /// ]
+    /// ```
+    public nonisolated(unsafe) static var customAlertConfiguration: [PermissionType: (title: String, message: String, cancelButton: String, openSettingsButton: String)]?
+
     // MARK: - Individual Permission APIs
 
     /// Camera permission
