@@ -272,6 +272,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OneKitDemo;
+				INFOPLIST_KEY_NSCameraUsageDescription = "OneKitDemo needs camera access to demonstrate permission management features.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "OneKitDemo needs microphone access to demonstrate permission management features.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "OneKitDemo needs photo library access to demonstrate permission management features.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -305,6 +308,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OneKitDemo;
+				INFOPLIST_KEY_NSCameraUsageDescription = "OneKitDemo needs camera access to demonstrate permission management features.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "OneKitDemo needs microphone access to demonstrate permission management features.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "OneKitDemo needs photo library access to demonstrate permission management features.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
