@@ -28,6 +28,10 @@ struct ContentView: View {
                     NavigationLink("String Extensions", destination: StringExtensionsView())
                     NavigationLink("Date Extensions", destination: DateExtensionsView())
                 }
+
+                Section("UI Components") {
+                    NavigationLink("Components", destination: ComponentsDemoView())
+                }
             }
             .navigationTitle("OneKit Demo")
         }
