@@ -23,6 +23,7 @@ struct ContentView: View {
                 }
 
                 Section("Utilities") {
+                    NavigationLink("UserDefaults", destination: UserDefaultsDemoView())
                     NavigationLink("String Extensions", destination: StringExtensionsView())
                     NavigationLink("Date Extensions", destination: DateExtensionsView())
                 }
