@@ -216,9 +216,9 @@ struct DeviceNetworkTests {
         let ipAddress = DeviceNetwork.ipAddress
 
         if !ipAddress.isEmpty {
-            // Valid characters: digits, dots, colons, brackets (for IPv6)
-            // 有效字符：数字、点、冒号、括号（用于IPv6）
-            let validChars = CharacterSet(charactersIn: "0123456789.:[%]")
+            // Valid characters: digits, hex letters (a-f, A-F) for IPv6, dots, colons, percent
+            // 有效字符：数字、十六进制字母(a-f, A-F)用于IPv6、点、冒号、百分号
+            let validChars = CharacterSet(charactersIn: "0123456789abcdefABCDEF.:[%]")
             let isValid = ipAddress.unicodeScalars.allSatisfy { validChars.contains($0) }
 
             #expect(isValid)
