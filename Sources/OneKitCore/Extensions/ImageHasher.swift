@@ -5,6 +5,7 @@
 //  Created by zyw on 2025/12/30.
 //
 
+#if canImport(UIKit)
 import UIKit
 import Accelerate
 
@@ -226,3 +227,6 @@ struct ImageHasher {
         return diff
     }
 }
+
+
+#endif
