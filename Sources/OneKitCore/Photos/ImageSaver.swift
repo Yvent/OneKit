@@ -222,21 +222,30 @@ public actor ImageSaver {
     }
 
     private func performSave(imageData: Data, toAlbum albumName: String?) async throws -> PHAsset {
+        // Convert Data to UIImage
+        guard let image = UIImage(data: imageData) else {
+            throw ImageSaverError.invalidImageData
+        }
+
+        return try await performSave(image: image, toAlbum: albumName)
+    }
+
+    private func performSave(image: UIImage, toAlbum albumName: String?) async throws -> PHAsset {
         if let albumName = albumName {
             // Save to specific album
-            return try await saveToAlbum(imageData: imageData, albumName: albumName)
+            return try await saveToAlbum(image: image, albumName: albumName)
         } else {
             // Save to camera roll
-            return try await saveToCameraRoll(imageData: imageData)
+            return try await saveToCameraRoll(image: image)
         }
     }
 
-    private func saveToCameraRoll(imageData: Data) async throws -> PHAsset {
+    private func saveToCameraRoll(image: UIImage) async throws -> PHAsset {
         try await withCheckedThrowingContinuation { continuation in
             var savedAsset: PHAsset?
 
             PHPhotoLibrary.shared().performChanges {
-                let request = PHAssetChangeRequest.creationRequestForAsset(from: imageData)
+                let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
                 savedAsset = request.placeholderForCreatedAsset
             } completionHandler: { success, error in
                 if success, let asset = savedAsset?.placeholderForCreatedAsset {
@@ -248,7 +257,7 @@ public actor ImageSaver {
         }
     }
 
-    private func saveToAlbum(imageData: Data, albumName: String) async throws -> PHAsset {
+    private func saveToAlbum(image: UIImage, albumName: String) async throws -> PHAsset {
         // First, try to find the album
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "title = %@", albumName)
@@ -256,19 +265,19 @@ public actor ImageSaver {
 
         if let album = collections.firstObject as? PHAssetCollection {
             // Album exists, add to it
-            return try await addImageToAlbum(imageData: imageData, album: album)
+            return try await addImageToAlbum(image: image, album: album)
         } else {
             // Album doesn't exist, create it first
-            return try await createAlbumAndAddImage(imageData: imageData, albumName: albumName)
+            return try await createAlbumAndAddImage(image: image, albumName: albumName)
         }
     }
 
-    private func addImageToAlbum(imageData: Data, album: PHAssetCollection) async throws -> PHAsset {
+    private func addImageToAlbum(image: UIImage, album: PHAssetCollection) async throws -> PHAsset {
         try await withCheckedThrowingContinuation { continuation in
             var savedAsset: PHAsset?
 
             PHPhotoLibrary.shared().performChanges {
-                let request = PHAssetChangeRequest.creationRequestForAsset(from: imageData)
+                let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
                 request.addAssetsToCollection(album)
                 savedAsset = request.placeholderForCreatedAsset
             } completionHandler: { success, error in
@@ -281,12 +290,12 @@ public actor ImageSaver {
         }
     }
 
-    private func createAlbumAndAddImage(imageData: Data, albumName: String) async throws -> PHAsset {
+    private func createAlbumAndAddImage(image: UIImage, albumName: String) async throws -> PHAsset {
         // First, create the album
         let album = try await createAlbum(albumName: albumName)
 
         // Then, add image to the newly created album
-        return try await addImageToAlbum(imageData: imageData, album: album)
+        return try await addImageToAlbum(image: image, album: album)
     }
 
     private func createAlbum(albumName: String) async throws -> PHAssetCollection {
