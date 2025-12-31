@@ -130,8 +130,16 @@ public actor ImageSaver {
         toAlbum albumName: String? = nil,
         completion: @escaping @Sendable @MainActor (Result<PHAsset, ImageSaverError>) -> Void
     ) {
-        // Convert CIImage to UIImage
-        let uiImage = UIImage(ciImage: image)
+        // Convert CIImage to UIImage by rendering to CGImage first
+        guard let cgImage = CIContext().createCGImage(image, from: image.extent) else {
+            Task {
+                await MainActor.run {
+                    completion(.failure(.invalidImageData))
+                }
+            }
+            return
+        }
+        let uiImage = UIImage(cgImage: cgImage, scale: 1.0, orientation: .up)
         save(uiImage, toAlbum: albumName, completion: completion)
     }
 
@@ -201,8 +209,11 @@ public actor ImageSaver {
     /// - Throws: ImageSaverError if save fails
     @discardableResult
     public func save(_ image: CIImage, toAlbum albumName: String? = nil) async throws -> PHAsset {
-        // Convert CIImage to UIImage
-        let uiImage = UIImage(ciImage: image)
+        // Convert CIImage to UIImage by rendering to CGImage first
+        guard let cgImage = CIContext().createCGImage(image, from: image.extent) else {
+            throw ImageSaverError.invalidImageData
+        }
+        let uiImage = UIImage(cgImage: cgImage, scale: 1.0, orientation: .up)
         return try await save(uiImage, toAlbum: albumName)
     }
 
