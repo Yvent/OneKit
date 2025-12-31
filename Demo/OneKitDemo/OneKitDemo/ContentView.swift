@@ -30,6 +30,7 @@ struct ContentView: View {
                     NavigationLink("String Extensions", destination: StringExtensionsView())
                     NavigationLink("Date Extensions", destination: DateExtensionsView())
                     NavigationLink("EXIF Reader", destination: ExifDemoView())
+                    NavigationLink("Image Saver", destination: ImageSaverDemoView())
                 }
 
                 Section("UI Components") {
