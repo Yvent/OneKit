@@ -14,35 +14,35 @@ import UIKit
 
 #if canImport(UIKit)
 
-actor CachedImageManager {
+public actor CachedImageManager {
 
-    let imageManager = PHCachingImageManager()
+    private let imageManager = PHCachingImageManager()
 
-    var imageContentMode = PHImageContentMode.aspectFit
+    public var imageContentMode = PHImageContentMode.aspectFit
 
-    enum CachedImageManagerError: LocalizedError {
+    public enum CachedImageManagerError: LocalizedError {
         case error(Error)
         case cancelled
         case failed
     }
 
-    var cachedAssetIdentifiers = [String : Bool]()
+    private var cachedAssetIdentifiers = [String : Bool]()
 
-    lazy var requestOptions: PHImageRequestOptions = {
+    public lazy var requestOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.deliveryMode = .opportunistic
         return options
     }()
 
-    init() {
+    public init() {
         imageManager.allowsCachingHighQualityImages = false
     }
 
-    var cachedImageCount: Int {
+    public var cachedImageCount: Int {
         cachedAssetIdentifiers.keys.count
     }
 
-    func startCaching(for assets: [PHAsset], targetSize: CGSize) {
+    public func startCaching(for assets: [PHAsset], targetSize: CGSize) {
         let phAssets = assets.compactMap { $0 }
         phAssets.forEach {
             cachedAssetIdentifiers[$0.localIdentifier] = true
@@ -50,7 +50,7 @@ actor CachedImageManager {
         imageManager.startCachingImages(for: phAssets, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions)
     }
 
-    func stopCaching(for assets: [PHAsset], targetSize: CGSize) {
+    public func stopCaching(for assets: [PHAsset], targetSize: CGSize) {
         let phAssets = assets.compactMap { $0 }
         phAssets.forEach {
             cachedAssetIdentifiers.removeValue(forKey: $0.localIdentifier)
@@ -58,12 +58,12 @@ actor CachedImageManager {
         imageManager.stopCachingImages(for: phAssets, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions)
     }
 
-    func stopCaching() {
+    public func stopCaching() {
         imageManager.stopCachingImagesForAllAssets()
     }
 
     @discardableResult
-    func requestImage(for asset: PHAsset, targetSize: CGSize, completion: @escaping ((image: Image?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
+    public func requestImage(for asset: PHAsset, targetSize: CGSize, completion: @escaping @Sendable ((image: Image?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
         let phAsset = asset
 
         let requestID = imageManager.requestImage(for: phAsset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
@@ -82,7 +82,7 @@ actor CachedImageManager {
         return requestID
     }
 
-    func cancelImageRequest(for requestID: PHImageRequestID) {
+    public func cancelImageRequest(for requestID: PHImageRequestID) {
         imageManager.cancelImageRequest(requestID)
     }
 }
