@@ -287,14 +287,20 @@ public actor ImageSaver {
     }
 
     private func addImageToAlbum(image: UIImage, album: PHAssetCollection) async throws -> PHAsset {
-        var assetIdentifier: String?
+        var assetPlaceholder: PHObjectPlaceholder?
 
-        // Step 1: Create the asset and add to album
+        // Create the asset and add to album in the same performChanges block
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             PHPhotoLibrary.shared().performChanges {
-                let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
-                request.addAssetsToCollection(album)
-                assetIdentifier = request.placeholderForCreatedAsset?.localIdentifier
+                // Create the asset
+                let assetRequest = PHAssetChangeRequest.creationRequestForAsset(from: image)
+                assetPlaceholder = assetRequest.placeholderForCreatedAsset
+
+                // Add to collection
+                if let collectionRequest = PHAssetCollectionChangeRequest(for: album),
+                   let placeholder = assetPlaceholder {
+                    collectionRequest.addAssets([placeholder] as NSArray)
+                }
             } completionHandler: { success, error in
                 if success {
                     continuation.resume()
@@ -304,12 +310,12 @@ public actor ImageSaver {
             }
         }
 
-        // Step 2: Fetch the created asset
-        guard let identifier = assetIdentifier else {
-            throw ImageSaverError.custom("Failed to get asset identifier")
+        // Fetch the created asset
+        guard let placeholder = assetPlaceholder else {
+            throw ImageSaverError.custom("Failed to get asset placeholder")
         }
 
-        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
+        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [placeholder.localIdentifier], options: nil)
 
         guard let asset = fetchResult.firstObject else {
             throw ImageSaverError.custom("Failed to fetch created asset")
