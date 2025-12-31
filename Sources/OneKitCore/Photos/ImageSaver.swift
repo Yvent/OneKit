@@ -241,20 +241,34 @@ public actor ImageSaver {
     }
 
     private func saveToCameraRoll(image: UIImage) async throws -> PHAsset {
-        try await withCheckedThrowingContinuation { continuation in
-            var savedAsset: PHAsset?
+        var assetIdentifier: String?
 
+        // Step 1: Create the asset
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             PHPhotoLibrary.shared().performChanges {
                 let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
-                savedAsset = request.placeholderForCreatedAsset
+                assetIdentifier = request.placeholderForCreatedAsset?.localIdentifier
             } completionHandler: { success, error in
-                if success, let asset = savedAsset?.placeholderForCreatedAsset {
-                    continuation.resume(returning: asset)
+                if success {
+                    continuation.resume()
                 } else {
                     continuation.resume(throwing: ImageSaverError.saveFailed(error))
                 }
             }
         }
+
+        // Step 2: Fetch the created asset
+        guard let identifier = assetIdentifier else {
+            throw ImageSaverError.custom("Failed to get asset identifier")
+        }
+
+        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
+
+        guard let asset = fetchResult.firstObject else {
+            throw ImageSaverError.custom("Failed to fetch created asset")
+        }
+
+        return asset
     }
 
     private func saveToAlbum(image: UIImage, albumName: String) async throws -> PHAsset {
@@ -273,21 +287,35 @@ public actor ImageSaver {
     }
 
     private func addImageToAlbum(image: UIImage, album: PHAssetCollection) async throws -> PHAsset {
-        try await withCheckedThrowingContinuation { continuation in
-            var savedAsset: PHAsset?
+        var assetIdentifier: String?
 
+        // Step 1: Create the asset and add to album
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             PHPhotoLibrary.shared().performChanges {
                 let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
                 request.addAssetsToCollection(album)
-                savedAsset = request.placeholderForCreatedAsset
+                assetIdentifier = request.placeholderForCreatedAsset?.localIdentifier
             } completionHandler: { success, error in
-                if success, let asset = savedAsset?.placeholderForCreatedAsset {
-                    continuation.resume(returning: asset)
+                if success {
+                    continuation.resume()
                 } else {
                     continuation.resume(throwing: ImageSaverError.saveFailed(error))
                 }
             }
         }
+
+        // Step 2: Fetch the created asset
+        guard let identifier = assetIdentifier else {
+            throw ImageSaverError.custom("Failed to get asset identifier")
+        }
+
+        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
+
+        guard let asset = fetchResult.firstObject else {
+            throw ImageSaverError.custom("Failed to fetch created asset")
+        }
+
+        return asset
     }
 
     private func createAlbumAndAddImage(image: UIImage, albumName: String) async throws -> PHAsset {
