@@ -5,9 +5,14 @@
 //  Created by zyw on 2025/12/31.
 //
 
-import UIKit
 import Photos
 import SwiftUI
+
+#if canImport(UIKit)
+import UIKit
+#endif
+
+#if canImport(UIKit)
 
 actor CachedImageManager {
 
@@ -81,3 +86,5 @@ actor CachedImageManager {
         imageManager.cancelImageRequest(requestID)
     }
 }
+
+#endif
