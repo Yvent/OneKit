@@ -25,9 +25,7 @@ struct ImageSaverDemoView: View {
     @State private var showPermissionAlert = false
     @State private var authorizationStatus: PHAuthorizationStatus = .notDetermined
 
-    private let imageSaver = ImageSaver()
-
-    enum SaveStatus {
+    enum SaveStatus: Equatable {
         case idle
         case saving
         case success(String)
@@ -155,11 +153,9 @@ struct ImageSaverDemoView: View {
         }
         .navigationTitle("Image Saver / 图片保存")
         .alert("Permission Required", isPresented: $showPermissionAlert) {
-            Alert(
-                title: Text("Permission Required"),
-                message: Text("Please grant photo library access in Settings."),
-                dismissButton: .default(Text("OK"))
-            )
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Please grant photo library access in Settings.")
         }
     }
 
@@ -223,11 +219,11 @@ struct ImageSaverDemoView: View {
     }
 
     private func updateAuthorizationStatus() async {
-        authorizationStatus = await imageSaver.checkAuthorizationStatus()
+        authorizationStatus = await ImageSaver.shared.checkAuthorizationStatus()
     }
 
     private func requestPermission() async {
-        authorizationStatus = await imageSaver.requestAuthorization()
+        authorizationStatus = await ImageSaver.shared.requestAuthorization()
 
         if authorizationStatus == .denied || authorizationStatus == .restricted {
             showPermissionAlert = true
@@ -242,7 +238,7 @@ struct ImageSaverDemoView: View {
 
         Task {
             do {
-                let asset = try await imageSaver.save(
+                let asset = try await ImageSaver.shared.save(
                     image,
                     toAlbum: albumName.isEmpty ? nil : albumName
                 )

@@ -54,6 +54,14 @@ public enum ImageSaverError: LocalizedError {
 /// 图片保存器，用于保存图片到相册
 public actor ImageSaver {
 
+    /// Shared singleton instance
+    /// 共享单例实例
+    public static let shared = ImageSaver()
+
+    /// Private initializer for singleton pattern
+    /// 单例模式的私有初始化器
+    private init() {}
+
     // MARK: - Check Authorization
 
     /// Check authorization status for photo library
