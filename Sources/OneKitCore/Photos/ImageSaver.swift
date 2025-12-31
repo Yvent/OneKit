@@ -299,20 +299,32 @@ public actor ImageSaver {
     }
 
     private func createAlbum(albumName: String) async throws -> PHAssetCollection {
-        try await withCheckedThrowingContinuation { continuation in
-            var createdCollection: PHAssetCollection?
+        var placeholder: PHObjectPlaceholder?
 
+        // Step 1: Create the album
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             PHPhotoLibrary.shared().performChanges {
                 let albumRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
-                createdCollection = albumRequest.placeholderForCreatedAssetCollection
+                placeholder = albumRequest.placeholderForCreatedAssetCollection
             } completionHandler: { success, error in
-                if success, let collection = createdCollection?.placeholderForCreatedAssetCollection {
-                    continuation.resume(returning: collection)
+                if success {
+                    continuation.resume()
                 } else {
                     continuation.resume(throwing: ImageSaverError.saveFailed(error))
                 }
             }
         }
+
+        // Step 2: Fetch the created album
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "title = %@", albumName)
+        let collections = PHCollectionList.fetchTopLevelUserCollections(with: fetchOptions)
+
+        guard let album = collections.firstObject as? PHAssetCollection else {
+            throw ImageSaverError.custom("Failed to fetch created album")
+        }
+
+        return album
     }
 }
 
