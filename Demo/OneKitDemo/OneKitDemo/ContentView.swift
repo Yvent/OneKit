@@ -20,6 +20,9 @@ struct ContentView: View {
                 Section("UI Components") {
                     NavigationLink("Gradient Playground", destination: GradientPlaygroundView())
                     NavigationLink("Haptic Feedback", destination: HapticDemoView())
+                    #if canImport(UIKit)
+                    NavigationLink("WebView", destination: WebViewDemoView())
+                    #endif
                 }
 
                 Section("Utilities") {
